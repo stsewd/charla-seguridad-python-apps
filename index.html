@@ -1,0 +1,297 @@
+<!doctype html>
+<html>
+
+<head>
+  <!-- vim: set ft=html: -->
+  <!-- Force Neovim to use HTML as filetype, the `@for` from `@fortawesome` makes it think we are using angular...  -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+  <title>Título</title>
+
+  <link rel="stylesheet" href="node_modules/reveal.js/dist/reset.css">
+  <link rel="stylesheet" href="node_modules/reveal.js/dist/reveal.css">
+  <link rel="stylesheet" href="node_modules/reveal.js/dist/theme/white.css">
+  <link rel="stylesheet" href="css/custom.css">
+
+  <!-- Theme used for syntax highlighting of code -->
+  <link rel="stylesheet" href="node_modules/@highlightjs/cdn-assets/styles/atom-one-light.css">
+
+  <!-- Fontawesome -->
+  <link href="node_modules/@fortawesome/fontawesome-free/css/all.min.css" rel="stylesheet">
+
+  <!-- Scripts to interact with the slides -->
+  <script src="js/start.js" defer></script>
+</head>
+
+<body>
+  <div class="reveal">
+    <div class="slides">
+      <section>
+        <h2>
+          Antes de empezar...
+        </h2>
+
+        <table class="borderless">
+          <tr>
+            <td>
+              <a href="?view=scroll">
+                Scroll view
+                <i class="fa-solid fa-mobile-screen"></i>
+              </a>
+              <br>
+              <small>
+                Si estás en un dispositivo móvil.
+              </small>
+            </td>
+            <td>
+              <a href="?view=fragment">
+                Fragment view
+                <i class="fa-solid fa-list"></i>
+              </a>
+              <br>
+              <small>
+                Tal como se ve en la presentación.
+              </small>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <a href="#" class="activate-speaker-mode">
+                Speaker mode
+                <i class="fa-regular fa-comments"></i>
+              </a>
+              <br>
+              <small>
+                Para ver las notas del presentador.
+              </small>
+            </td>
+            <td>
+              <a href="?print-pdf">
+                Print mode
+                <i class="fa-solid fa-print"></i>
+              </a>
+              <br>
+              <small>
+                Exportar a PDF.
+              </small>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <a href="#" class="show-search">
+                Search
+                <i class="fa-solid fa-magnifying-glass"></i>
+              </a>
+              <br>
+              <small>
+                Busca en la presentación (Ctrl + Shift + F).
+              </small>
+            </td>
+            <td>
+              <a href="#" class="show-shortcuts">
+                Shortcuts
+                <i class="fa-regular fa-circle-question"></i>
+              </a>
+            </td>
+          </tr>
+        </table>
+
+        <p>
+          Navega usando
+          <button class="black-button go-to-next-slide">
+            espacio
+          </button>
+        </p>
+      </section>
+
+      <section>
+        <header>
+          <h1>Título</h1>
+          <h2>Subtítulo</h2>
+        </header>
+        <p>
+          <small>
+            Santos Gallegos
+            -
+            <a href="mailto:stsewd@proton.me">
+              stsewd@proton.me
+            </a>
+          </small>
+          <br>
+          <small>
+            @stsewd
+            <a href="https://github.com/stsewd" target="_blank"><i class="fab fa-github"></i></a>
+            <a href="https://twitter.com/stsewd" target="_blank"><i class="fab fa-twitter"></i></a>
+          </small>
+        </p>
+
+        <aside class="notes">
+          Notes
+        </aside>
+      </section>
+
+      <section>
+        <h2>$ WHOAMI</h2>
+        <ul>
+          <li>Web developer</li>
+          <li>Ethical hacker</li>
+          <li><i class="fab fa-python"></i> <i class="fab fa-rust"></i></li>
+          <li>
+            @stsewd - <a href="https://stsewd.dev/" target="_blank">https://stsewd.dev/</a>
+          </li>
+        </ul>
+
+        <p>
+          <img src="img/rtd-logo-vertical.png" height="75px">
+        </p>
+        <aside class="notes">
+          Hola, soy Santos Gallegos, soy desarrollador web, y hacker ético.
+          Contribuyo activamente a proyectos open source,
+          y he reportado vulnerabilidades en varios proyectos dentro y fuera de mi trabajo,
+          como Neovim, GitPython, django-allauth, Read the Docs, Sentry, y un montón más.
+          Principalmente trabajo con Python y Rust.
+          Actualmente trabajo en Read the Docs, soy core developer.
+          De vez en cuando también hago bug bounty.
+          Me pueden encontrar en Internet como @stsewd.
+        </aside>
+      </section>
+
+      <section>
+        <h2>Título de la sección</h2>
+
+        <ul>
+          <li>Código</li>
+          <li>Documentación</li>
+          <li>Traducciones</li>
+          <li>Reportando bugs</li>
+        </ul>
+
+        <aside class="notes">
+          Notas
+        </aside>
+      </section>
+
+      <section>
+        <h2>Ejemplo de bloque de código</h2>
+        <p>
+          Código de ejemplo
+        </p>
+
+        <pre class=""><code data-trim data-noescape class="python">
+            print("Hola mundo")
+        </code></pre>
+
+        <aside class="notes">
+          Notas
+        </aside>
+      </section>
+
+      <section data-transition="zoom">
+        <h2>Frase para terminar la charla</h2>
+        <p>
+          subtitulo de la frase
+        </p>
+
+        <img src="img/qr.png" class="r-stretch">
+
+        <footer>
+          <p>
+            <small>
+              <a href="" class="go-to-next-slide">
+                Referencias y recursos
+                <i class="fa-regular fa-bookmark"></i>
+                <i class="fa-solid fa-link"></i>
+              </a>
+              <br>
+              <br>
+              <a href="https://github.com/stsewd/charla-xxx" target="_blank">
+                <span>
+                  Código fuente <i class="fas fa-code-branch"></i>
+                </span>
+                <br />
+                <span>https://github.com/stsewd/charla-xxx</span>
+              </a>
+            </small>
+          </p>
+
+          <p>
+            <small>
+              @stsewd
+              <a href="http://github.com/stsewd" target="_blank"><i class="fab fa-github"></i></a>
+              <a href="http://twitter.com/stsewd" target="_blank"><i class="fab fa-twitter"></i></a>
+              -
+              <a href="https://stsewd.dev" target="_blank">https://stsewd.dev</a>
+            </small>
+          </p>
+        </footer>
+
+        <aside class="notes">
+          Ahí les dejo el enlace a esta presentación y a mi blog donde a veces escribo cosas.
+          Y también estan las vulnerabilidades que he reportado y que son públicas.
+
+          Eso fue todo por hoy, espero hayan aprendido algo nuevo. Ahora vamos a las
+          preguntas. Si algo no se entendió, es probablemente mi culpa, no lo expliqué
+          bien, así que siéntanse libres de preguntar algo incluso si ya lo
+          di en la presentación, y lo voy a tratar de aclarar.
+        </aside>
+      </section>
+
+      <section>
+        <div>
+          <h2>Referencias y recursos</h2>
+          <small>
+            <ul>
+              <li>
+                <a href="#" target="_blank">Simple link</a>
+              </li>
+              <li>
+                Link with text:
+                <a href="#" target="_blank">
+                  https://example.com
+                </a>
+              </li>
+              <li>
+                Group of links:
+                <ul>
+                  <li>
+                    <a href="#" target="_blank">
+                      https://example.com/1/
+                    </a>
+                  </li>
+                  <li>
+                    <a href="#" target="_blank">
+                      https://example.com/2/
+                    </a>
+                  </li>
+                </ul>
+              </li>
+            </ul>
+          </small>
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <script src="node_modules/reveal.js/dist/reveal.js"></script>
+  <script src="node_modules/reveal.js/plugin/notes/notes.js"></script>
+  <script src="node_modules/reveal.js/plugin/markdown/markdown.js"></script>
+  <script src="node_modules/reveal.js/plugin/search/search.js"></script>
+  <script src="node_modules/reveal.js/plugin/zoom/zoom.js"></script>
+  <script src="node_modules/reveal.js/plugin/highlight/highlight.js"></script>
+  <script>
+    // More info about initialization & config:
+    // - https://revealjs.com/initialization/
+    // - https://revealjs.com/config/
+    Reveal.initialize({
+      hash: true,
+      maxScale: 1,
+      width: 1060,
+      height: 800,
+      // Learn about plugins: https://revealjs.com/plugins/
+      plugins: [RevealMarkdown, RevealHighlight, RevealNotes, RevealSearch, RevealZoom]
+    });
+  </script>
+</body>
+
+</html>
