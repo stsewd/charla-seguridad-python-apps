@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block title %}
+ReDoS
+{% endblock %}
+{% block content %}
+<h1>Find word</h1>
+
+<form action="." method="get">
+  <label for="word">Word:</label>
+  <input type="text" id="word" name="word" value="{{ word|default:"" }}">
+  <!-- text input -->
+  <label for="text">Text:</label>
+  <input type="text" id="text" name="text" value="{{ text|default:"" }}">
+  <button type="submit">Find</button>
+</form>
+
+<h2>Result</h2>
+
+<h1>
+  {% if found %}
+  <i class="fa-solid fa-circle-check fa-2xl pico-color-green-500"></i>
+  {% else %}
+  <i class="fa-solid fa-circle-xmark fa-2xl pico-color-red-500"></i>
+  {% endif %}
+</h1>
+
+{% endblock %}
+

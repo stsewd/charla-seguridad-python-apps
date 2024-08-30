@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block title %}Command injection{% endblock %}
+{% block content %}
+<h1>Command injection</h1>
+
+<form action="." method="get">
+  <label for="domain">Domain:</label>
+  <input type="text" id="domain" name="domain" value="{{ domain|default:"" }}">
+  <button type="submit">Ping</button>
+</form>
+
+<h2>
+  Result
+</h2>
+
+<h1>
+  {% if success %}
+  <i class="fa-solid fa-circle-check fa-2xl pico-color-green-500"></i>
+  {% else %}
+  <i class="fa-solid fa-circle-xmark fa-2xl pico-color-red-500"></i>
+  {% endif %}
+</h1>
+
+{% endblock %}

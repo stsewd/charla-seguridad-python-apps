@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block title %}
+Is URL relative?
+{% endblock %}
+{% block content %}
+<h1>
+  Is URL relative?
+</h1>
+
+<form action="." method="get">
+  <label for="url">URL:</label>
+  <input type="text" id="url" name="url" value="{{ url|default:"" }}">
+  <button type="submit">Check</button>
+</form>
+
+<h2>
+  Result
+</h2>
+
+<div>
+  <p>
+  <a href="{{ url }}" target="_blank">{{ url }}</a>
+  </p>
+
+  <h1>
+    {% if result %}
+    <i class="fa-solid fa-circle-check fa-2xl pico-color-green-500"></i>
+    {% else %}
+    <i class="fa-solid fa-circle-xmark fa-2xl pico-color-red-500"></i>
+    {% endif %}
+  </h1>
+</div>
+{% endblock %}

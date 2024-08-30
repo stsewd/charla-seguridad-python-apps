@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block title %}Say hello!{% endblock %}
+{% block content %}
+<h1>Say hello!</h1>
+
+<form action="." method="get">
+  <label for="name">Your name:</label>
+  <input type="text" id="name" name="name" value="{{ name|default:"" }}">
+  <button type="submit">Say hello</button>
+</form>
+
+<div>
+  <p title={{ name }}>Hello, {{ name }}!</p>
+</div>
+{% endblock %}

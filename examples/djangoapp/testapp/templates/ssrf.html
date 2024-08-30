@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block title %}SSRF{% endblock %}
+{% block content %}
+<h1>SSRF</h1>
+
+<form action="." method="get">
+  <label for="url">URL</label>
+  <input type="text" id="url" name="url" value="{{ url|default:"" }}">
+  <button type="submit">Fetch</button>
+</form>
+
+{% if content %}
+<div>
+  <pre><code>{{ content }}</code></pre>
+</div>
+{% endif %}
+
+{% endblock %}

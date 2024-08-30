@@ -7,7 +7,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
-  <title>Título</title>
+  <title>Seguridad en aplicaciones Python: de un developer a otro</title>
 
   <link rel="stylesheet" href="node_modules/reveal.js/dist/reset.css">
   <link rel="stylesheet" href="node_modules/reveal.js/dist/reveal.css">
@@ -32,7 +32,7 @@
           Antes de empezar...
         </h2>
 
-        <table class="borderless">
+        <table class="borderless align-top">
           <tr>
             <td>
               <a href="?view=scroll">
@@ -99,16 +99,16 @@
 
         <p>
           Navega usando
-          <button class="black-button go-to-next-slide">
+          <button class="black-button navigate-next">
             espacio
           </button>
         </p>
       </section>
 
-      <section>
+      <section data-background-image="img/python-logo.svg" data-background-size="35%" data-background-opacity="0.3">
         <header>
-          <h1>Título</h1>
-          <h2>Subtítulo</h2>
+          <h1>Seguridad en aplicaciones Python</h1>
+          <h2>De un developer a otro</h2>
         </header>
         <p>
           <small>
@@ -129,6 +129,17 @@
         <aside class="notes">
           Notes
         </aside>
+      </section>
+
+      <section data-background-color="#1b998b" data-background-image="img/no-sign.png" data-background-size="35%"
+        data-background-opacity="0.2">
+        <h1>
+          <i class="fa-solid fa-triangle-exclamation"></i>
+          Nunca confíes en input de un usuario
+        </h1>
+        <p>
+          <em>- Fin</em>
+        </p>
       </section>
 
       <section>
@@ -158,39 +169,1026 @@
       </section>
 
       <section>
-        <h2>Título de la sección</h2>
-
+        <h2>
+          <i class="fa-solid fa-bullseye"></i>
+          Enfoque
+        </h2>
         <ul>
-          <li>Código</li>
-          <li>Documentación</li>
-          <li>Traducciones</li>
-          <li>Reportando bugs</li>
+          <li>Vulnerabilidades más comunes</li>
+          <li>Python standard library</li>
+          <li>Web (Django)</li>
         </ul>
+      </section>
+
+      <section>
+        <h2>Los sospechosos de siempre</h2>
+        <table class="borderless align-center">
+          <tr>
+            <td>
+              <ul>
+                <li>Autenticación / Autorización</li>
+                <li>Inyección SQL / XSS</li>
+                <li>Componentes desactualizados vulnerables</li>
+              </ul>
+            </td>
+            <td>
+              <img src="img/los-de-siempre.png">
+            </td>
+          </tr>
+        </table>
+
+        <p>
+          <small>
+            <a href="https://owasp.org/Top10/" target="_blank">https://owasp.org/Top10/</a>
+          </small>
+        </p>
+      </section>
+
+      <section data-background-color="#da5552">
+        <h1>
+          <i class="fa-solid fa-bug color"></i>
+        </h1>
+        <h2>
+          Fallas al validar y sanitizar input
+        </h2>
+      </section>
+
+      <section data-background-image="img/broken-lock.png" data-background-size="25%" data-background-color="#89CFF3">
+        <h2>Fallas de autenticación y autorización</h2>
+      </section>
+
+      <section>
+        <h2>Autenticación y autorización</h2>
+
+        <p>
+          <strong>Autenticación</strong>: ¿Quién eres?
+        </p>
+
+        <p>
+          <strong>Autorización</strong>: ¿Qué puedes hacer?
+        </p>
+
+        <p>
+          Django tiene un sistema de autenticación y autorización muy completo.
+          <strong>ÚSALO</strong>
+        </p>
+
+        <p>
+          <small>
+            <a href="https://docs.djangoproject.com/en/5.1/topics/auth/default/" target="_blank">
+              https://docs.djangoproject.com/en/5.1/topics/auth/default/
+            </a>
+          </small>
+        </p>
+      </section>
+
+      <section>
+        <h2>Autenticación</h2>
+        <pre class=""><code data-trim data-noescape class="python">
+          from django.contrib.auth.decorators import login_required
+          from django.contrib.auth.mixins import LoginRequiredMixin
+
+          @login_required
+          def my_view(request):
+              pass
+
+          class MyView(LoginRequiredMixin, View):
+              pass
+        </code></pre>
 
         <aside class="notes">
-          Notas
+          Si están usando clases, recuerden siempre poner el mixin primero,
+          de lo contrario, no va a funcionar. Este puede ser un error común.
         </aside>
       </section>
 
       <section>
-        <h2>Ejemplo de bloque de código</h2>
-        <p>
-          Código de ejemplo
-        </p>
+        <h2>Autorización</h2>
 
         <pre class=""><code data-trim data-noescape class="python">
-            print("Hola mundo")
-        </code></pre>
+          from django.contrib.auth.decorators import login_required
+          from django.contrib.auth.decorators import permission_required
 
-        <aside class="notes">
-          Notas
-        </aside>
+          @login_required
+          def list_books(request):
+              books = Book.objects.filter(user=request.user)
+              ...
+
+          @login_required
+          @permission_required("books.change_book")
+          def update_book(request):
+              book_id = request.POST["book_id"]
+              book = Book.objects.get(user=request.user, pk=book_id)
+              ...
+        </code></pre>
+      </section>
+
+      <section>
+        <h2>
+          Simple y efectivo
+        </h2>
+        <h3>
+          Para un developer y un atacante
+        </h3>
+
+        <p>
+          Controles de acceso son muy fáciles de implementar y usar.
+          Pero si son omitidos o implementados incorrectamente,
+          pueden ser un gran problema.
+        </p>
+      </section>
+
+      <section>
+        <h2>
+          ¿Cómo evitar estos problemas?
+        </h2>
+      </section>
+
+      <section data-background-color="#1b998b" class="">
+        <h1 class="r-fit-text">
+          TESTS
+        </h1>
+      </section>
+
+      <section>
+        <h2>TESTS</h2>
+        <ul>
+          <li>Usuario no autenticado</li>
+          <li>Usuario autenticado, con permisos</li>
+          <li>Usuario autenticado, sin permisos</li>
+        </ul>
+        <p>
+          Escribe tests por cada operación
+        </p>
+      </section>
+
+      <section>
+        <h1><code>urllib.parse</code></h1>
+        <p>
+          <small>
+            <a href="https://docs.python.org/3/library/urllib.parse.html" target="_blank">
+              https://docs.python.org/3/library/urllib.parse.html
+            </a>
+          </small>
+        </p>
+      </section>
+
+      <section>
+        <h2><code>urllib.parse</code></h2>
+
+        <pre class=""><code data-trim data-noescape class="python">
+          from urllib.parse import urlparse
+
+          urlparse("https://example.com/path/to/file/?query#fragment")
+          ParseResult(
+              scheme="https",
+              netloc="example.com",
+              path="/path/to/file/",
+              params="",
+              query="query",
+              fragment="fragment",
+          )
+        </code></pre>
+      </section>
+
+      <section>
+        <h2><code>urllib.parse</code></h2>
+        <p>
+          <em>
+            The urlsplit() and urlparse() APIs do not perform validation of inputs. They may not raise errors on inputs
+            that other applications consider invalid. They may also succeed on some inputs that might not be considered
+            URLs elsewhere. Their purpose is for practical functionality rather than purity.
+          </em>
+        </p>
+        <p>
+          <small>
+            <a href="https://docs.python.org/3/library/urllib.parse.html#url-parsing-security" target="_blank">
+              https://docs.python.org/3/library/urllib.parse.html#url-parsing-security
+            </a>
+          </small>
+        </p>
+      </section>
+
+      <section>
+        <h2>Casos de uso comunes</h2>
+        <ul>
+          <li>
+            Validar que sea una URL válida
+          </li>
+          <li>
+            Validar que una URL pertenezca a un dominio específico
+          </li>
+          <li>
+            Validar que una URL sea relativa al dominio actual
+          </li>
+          <li>
+            Validar que el path de una URL esté dentro de un directorio específico
+          </li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>El caso curioso de las URLs</h2>
+        <table class="align-center">
+          <thead>
+            <tr>
+              <th>URL</th>
+              <th>
+                <i class="fa-brands fa-python"></i>
+              </th>
+              <th>
+                <i class="fa-solid fa-globe"></i>
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>
+                <a href="https://example.com" target="_blank">
+                  https://example.com
+                </a>
+              </td>
+              <td colspan="2">
+                <small>protocolo con dominio</small>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <a href="https://docs.example.com" target="_blank">
+                  https://docs.example.com
+                </a>
+              </td>
+              <td colspan="2">
+                <small>protocolo con sub-dominio</small>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <a href="https://docs.example.example.com" target="_blank">
+                  https://docs.example.example.com
+                </a>
+              </td>
+              <td colspan="2">
+                <small>protocolo con sub-dominio</small>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+
+        <small>
+          <table>
+            <tr>
+              <td>
+                <i class="fa-brands fa-python"></i> = urllib.parse
+              </td>
+              <td>
+                <i class="fa-solid fa-globe"></i> = browser
+              </td>
+            </tr>
+          </table>
+        </small>
+      </section>
+
+      <section>
+        <h2>El caso curioso de las URLs</h2>
+        <table class="align-center">
+          <thead>
+            <tr>
+              <th>URL</th>
+              <th>
+                <i class="fa-brands fa-python"></i>
+              </th>
+              <th>
+                <i class="fa-solid fa-globe"></i>
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>
+                <a href="https://example.com." target="_blank">
+                  https://example.com.
+                </a>
+              </td>
+              <td colspan="2">
+                <small>protocolo con dominio</small>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <a href="https://docs.example.com." target="_blank">
+                  https://docs.example.com.
+                </a>
+              </td>
+              <td colspan="2">
+                <small>protocolo con dominio</small>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+
+        <small>
+          <table>
+            <tr>
+              <td>
+                <i class="fa-brands fa-python"></i> = urllib.parse
+              </td>
+              <td>
+                <i class="fa-solid fa-globe"></i> = browser
+              </td>
+            </tr>
+          </table>
+        </small>
+      </section>
+
+      <section>
+        <h2>El caso curioso de las URLs</h2>
+        <table class="align-center">
+          <thead>
+            <tr>
+              <th>URL</th>
+              <th>
+                <i class="fa-brands fa-python"></i>
+              </th>
+              <th>
+                <i class="fa-solid fa-globe"></i>
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>
+                <a href="example.com" target="_blank">
+                  example.com
+                </a>
+              </td>
+              <td colspan="2">
+                <small>path relativo</small>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <a href="/example.com" target="_blank">
+                  /example.com
+                </a>
+              </td>
+              <td colspan="2">
+                <small>path absoluto</small>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <a href="//example.com" target="_blank">
+                  //example.com
+                </a>
+              </td>
+              <td colspan="2">
+                <small>protocolo relativo</small>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+
+        <small>
+          <table>
+            <tr>
+              <td>
+                <i class="fa-brands fa-python"></i> = urllib.parse
+              </td>
+              <td>
+                <i class="fa-solid fa-globe"></i> = browser
+              </td>
+            </tr>
+          </table>
+        </small>
+      </section>
+
+      <section>
+        <h2>El caso curioso de las URLs</h2>
+        <table class="align-center">
+          <thead>
+            <tr>
+              <th>URL</th>
+              <th>
+                <i class="fa-brands fa-python"></i>
+              </th>
+              <th>
+                <i class="fa-solid fa-globe"></i>
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>
+                <a href="foo://example.com/" target="_blank">
+                  foo://example.com
+                </a>
+              </td>
+              <td>
+                <small>URL con protocolo foo</small>
+              </td>
+              <td>
+                <i class="fa-solid fa-xmark color-red"></i>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <a href="mailto:user@example.com" target="_blank">
+                  mailto:user@example.com
+                </a>
+              </td>
+              <td colspan="2">
+                <small>Abrir cliente de email</small>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+
+        <small>
+          <table>
+            <tr>
+              <td>
+                <i class="fa-brands fa-python"></i> = urllib.parse
+              </td>
+              <td>
+                <i class="fa-solid fa-globe"></i> = browser
+              </td>
+            </tr>
+          </table>
+        </small>
+      </section>
+
+      <section>
+        <h2>El caso curioso de las URLs</h2>
+        <table>
+          <thead>
+            <tr>
+              <th>URL</th>
+              <th>
+                <i class="fa-brands fa-python"></i>
+              </th>
+              <th>
+                <i class="fa-solid fa-globe"></i>
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>
+                <a href="javascript:alert(document.domain)">
+                  javascript:alert(document.domain)
+                </a>
+              </td>
+              <td colspan="2">
+                <small>Ejecutar JS</small>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <a href="javascript://example.com/alert(document.domain)">
+                  javascript://example.com/alert(document.domain)
+                </a>
+              </td>
+              <td colspan="2">
+                <small>Ejecutar JS (comentario)</small>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <a href="javascript://example.com/%0Aalert(document.domain)">
+                  javascript://example.com/%0Aalert(document.domain)
+                </a>
+              </td>
+              <td colspan="2">
+                <small>Ejecutar JS (comentario seguido de salto de línea)</small>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+
+        <small>
+          <table>
+            <tr>
+              <td>
+                <i class="fa-brands fa-python"></i> = urllib.parse
+              </td>
+              <td>
+                <i class="fa-solid fa-globe"></i> = browser
+              </td>
+            </tr>
+          </table>
+        </small>
+      </section>
+
+      <section>
+        <h2>El caso curioso de las URLs</h2>
+        <table class="align-center">
+          <thead>
+            <tr>
+              <th>URL</th>
+              <th>
+                <i class="fa-brands fa-python"></i>
+              </th>
+              <th>
+                <i class="fa-solid fa-globe"></i>
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>
+                <a href="https:/&NewLine;/example.com" target="_blank">https:/{NEWLINE}/example.com</a>
+              </td>
+              <td colspan="2">
+                <small>protocolo con dominio</small>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <a href="https://example.&NewLine;com" target="_blank">https://example.{NEWLINE}com</a>
+              </td>
+              <td colspan="2">
+                <small>protocolo con dominio</small>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <a href="https://example.com/path/&NewLine;to/file" target="_blank">
+                  https://example.com/path{NEWLINE}to/file
+                </a>
+              </td>
+              <td colspan="2">
+                <small>protocolo con dominio</small>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+
+        <small>
+          <table>
+            <tr>
+              <td>
+                <i class="fa-brands fa-python"></i> = urllib.parse
+              </td>
+              <td>
+                <i class="fa-solid fa-globe"></i> = browser
+              </td>
+            </tr>
+          </table>
+        </small>
+      </section>
+
+      <section>
+        <h2>El caso curioso de las URLs</h2>
+        <table class="align-center">
+          <thead>
+            <tr>
+              <th>URL</th>
+              <th>
+                <i class="fa-brands fa-python"></i>
+              </th>
+              <th>
+                <i class="fa-solid fa-globe"></i>
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>
+                <a href="https:/example.com" target="_blank">
+                  https:/example.com
+                </a>
+              </td>
+              <td>
+                <small>protocolo sin dominio</small>
+              </td>
+              <td>
+                <small>protocolo con dominio</small>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <a href="https://user:pass@example.com" target="_blank">
+                  https://user:pass@example.com
+                </a>
+              </td>
+              <td>
+                <small>URL con basic auth</small>
+              </td>
+              <td>
+                <small>URL con basic auth</small>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+
+        <small>
+          <table>
+            <tr>
+              <td>
+                <i class="fa-brands fa-python"></i> = urllib.parse
+              </td>
+              <td>
+                <i class="fa-solid fa-globe"></i> = browser
+              </td>
+            </tr>
+          </table>
+        </small>
+      </section>
+
+      <section>
+        <h2>El caso curioso de las URLs</h2>
+        <table class="align-center">
+          <thead>
+            <tr>
+              <th>URL</th>
+              <th>
+                <i class="fa-brands fa-python"></i>
+              </th>
+              <th>
+                <i class="fa-solid fa-globe"></i>
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>
+                <a href="\example.com" target="_blank">
+                  \example.com
+                </a>
+              </td>
+              <td>
+                <small>path relativo</small>
+              </td>
+              <td>
+                <small>path absoluto</small>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <a href="\\example.com" target="_blank">
+                  \\example.com
+                </a>
+              </td>
+              <td>
+                <small>path relativo</small>
+              </td>
+              <td>
+                <small>dominio relativo</small>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <a href="/\example.com" target="_blank">
+                  /\example.com
+                </a>
+              </td>
+              <td>
+                <small>path absoluto</small>
+              </td>
+              <td>
+                <small>dominio relativo</small>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <a href="https:\\example.com\path\to\file" target="_blank">
+                  https:\\example.com\path\to\file
+                </a>
+              </td>
+              <td>
+                <small>Protocolo y path</small>
+              </td>
+              <td>
+                <small>Full URL</small>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+
+        <small>
+          <table>
+            <tr>
+              <td>
+                <i class="fa-brands fa-python"></i> = urllib.parse
+              </td>
+              <td>
+                <i class="fa-solid fa-globe"></i> = browser
+              </td>
+            </tr>
+          </table>
+        </small>
+      </section>
+
+      <section>
+        <h2>Ejemplo: validar si una URL pertece a un dominio</h2>
+      </section>
+
+      <section>
+        <h2>Open redirect</h2>
+        <p>
+          https://example.com/login/?next=https://evil.example.com
+        </p>
+      </section>
+
+      <section>
+        <h2>Ejemplo: validar si la URL es relativa al dominio actual</h2>
+      </section>
+
+      <section>
+        <h2>Ejemplo: validar si el path de una URL está dentro de un directorio</h2>
+      </section>
+
+      <section>
+        <h2>XSS</h2>
+        <h3>
+          Cross-site scripting
+        </h3>
+      </section>
+
+      <section>
+        <h2>XSS</h2>
+        <p>
+          Es una vulnerabilidad que permite a un atacante inyectar código HTML en una página web.
+          Usualmente esto permite al atacante ejecutar JS en el contexto de la página.
+        </p>
+      </section>
+
+      <section>
+        <h2>XSS: Ejemplo</h2>
+
+        <pre class=""><code data-trim data-noescape class="python">
+          def index(request):
+              name = request.GET.get("name")
+              return HttpResponse(f"&lt;h1&gt;Hello, {name}!&lt;/h1&gt;")
+        </code></pre>
+      </section>
+
+      <section>
+        <h2>XSS: cómo evitarlo</h2>
+        <ul>
+          <li>Escapar todo input</li>
+          <li>Usar templates</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>
+          XSS: errores comunes
+        </h2>
+        <p>
+          Uso incorrecto de las funciones de escape
+        </p>
+
+        <p>
+          <small>
+            <a href="https://docs.djangoproject.com/en/5.0/ref/utils/#django.utils.html.format_html" target="_blank">
+              https://docs.djangoproject.com/en/5.0/ref/utils/#django.utils.html.format_html
+            </a>
+          </small>
+        </p>
+      </section>
+
+      <section>
+        <h2>
+          XSS: errores comunes
+        </h2>
+        <p>
+          Confiar que ciertos tipos de datos no pueden contener código malicioso.
+        </p>
+      </section>
+
+      <section>
+        <h2>
+          XSS: errores comunes
+        </h2>
+        <p>
+          No poner entre comillas valores de atributos de los tags HTML
+        </p>
+        <pre class=""><code data-trim data-noescape class="html">
+          &lt;p title={{ name }}&gt;Hello, {{ name }}!&lt;/p&gt;
+        </code></pre>
+      </section>
+
+      <section>
+        <h2>
+          XSS: errores comunes
+        </h2>
+
+        <p>
+          Retornar una objecto <code>HttpResponse</code> sin especificar el tipo de contenido.
+        </p>
+      </section>
+
+      <section>
+        <h2>
+          SQL injection
+        </h2>
+        <p>
+          Es una vulnerabilidad que permite a un atacante ejecutar comandos SQL en una base de datos.
+        </p>
+      </section>
+
+      <section>
+        <h2>
+          SQLI: Ejemplo
+        </h2>
+        <pre class=""><code data-trim data-noescape class="python">
+          cursor.execute(f"SELECT * FROM users WHERE username='{username}'")
+        </code></pre>
+      </section>
+
+      <section>
+        <h2>SQL injection</h2>
+        <ul>
+          <li>
+            Usar queries parametrizadas
+          </li>
+          <li>
+            Usar un ORM
+          </li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>
+          SQLi: errores comunes
+        </h2>
+        <p>
+          Mal uso de queries parametrizadas
+        </p>
+        <p>
+          <small>
+            <a href="https://docs.djangoproject.com/en/5.1/topics/db/sql/#passing-parameters-into-raw" target="_blank">
+              https://docs.djangoproject.com/en/5.1/topics/db/sql/#passing-parameters-into-raw
+            </a>
+          </small>
+        </p>
+      </section>
+
+      <section>
+        <h2>
+          SQLi: errores comunes
+        </h2>
+        <p>
+          Confiar en que ciertos tipos de datos no pueden contener comandos SQL
+        </p>
+      </section>
+
+      <section>
+        <h2>
+          SSRF
+        </h2>
+        <h3>
+          Server side request forgery
+        </h3>
+      </section>
+
+      <section>
+        <h2>
+          SSRF
+        </h2>
+        <p>
+          Es una vulnerabilidad que permite a un atacante realizar peticiones a la red interna de la aplicación.
+        </p>
+      </section>
+
+      <section>
+        <h2>
+          SSRF: Ejemplo
+        </h2>
+        <pre class=""><code data-trim data-noescape class="python">
+          url = request.GET.get("url")
+          response = requests.get(url)
+        </code></pre>
+      </section>
+
+      <section>
+        <h2>
+          Webhooks
+        </h2>
+        <ul>
+          <li>
+            Falta de autenticación / autorización
+          </li>
+          <li>
+            SSRF
+          </li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>
+          SSRF: cómo evitarlo
+        </h2>
+        <ul>
+          <li>
+            Limitar los hosts a los que se puede hacer peticiones
+          </li>
+          <li>
+            Aislar requests que no son de confianza
+          </li>
+        </ul>
+        <p>
+          <small>
+            <a href="https://github.com/stripe/smokescreen" target="_blank">https://github.com/stripe/smokescreen</a>
+          </small>
+        </p>
+      </section>
+
+      <section>
+        <h2>
+          Command injection
+        </h2>
+        <p>
+          Es una vulnerabilidad que permite a un atacante ejecutar comandos arbitrarios en el sistema operativo.
+        </p>
+      </section>
+
+      <section>
+        <h2>
+          Command injection: Ejemplo
+        </h2>
+        <pre class=""><code data-trim data-noescape class="python">
+          domain = request.GET.get("domain")
+          os.system(f"ping -c 1 {domain}")
+        </code></pre>
+      </section>
+
+      <section>
+        <h2>Command injection: errores comunes</h2>
+        <ul>
+          <li>
+            Usar funciones que permiten ejecutar comandos directamente en el sistema operativo
+          </li>
+          <li>
+            No validar input de usuarios
+          </li>
+          <li>
+            No separar opciones de argumentos posicionales
+          </li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>
+          ReDoS
+        </h2>
+        <h3>
+          Regular expression denial of service
+        </h3>
+      </section>
+
+      <section>
+        <h2>
+          ReDoS
+        </h2>
+        <p>
+          Es una vulnerabilidad que permite a un atacante que la evaluación de una expresión regular sea muy costosa.
+        </p>
+      </section>
+
+      <!-- TODO
+      <section>
+        <h2>
+          Path traversal
+        </h2>
+      </section>
+      -->
+
+      <section>
+        <h2>ReDOS: errores comunes</h2>
+        <ul>
+          <li>
+            Usar regex
+          </li>
+          <li>
+            No escapar input de usuarios
+          </li>
+          <li>
+            Escribir expresiones regulares ineficientes
+          </li>
+        </ul>
+
+        <p>
+          <small>
+            <a href="https://redosdetector.com/" target="_blank">
+              https://redosdetector.com/
+            </a>
+          </small>
+          <br>
+          <small>
+            <a href="https://makenowjust-labs.github.io/recheck/playground/" target="_blank">
+              https://makenowjust-labs.github.io/recheck/playground/
+            </a>
+          </small>
+        </p>
       </section>
 
       <section data-transition="zoom">
-        <h2>Frase para terminar la charla</h2>
+        <h2>Nunca confíes en input de un usuario</h2>
         <p>
-          subtitulo de la frase
+          Ni de las LLMs
         </p>
 
         <img src="img/qr.png" class="r-stretch">
@@ -198,19 +1196,14 @@
         <footer>
           <p>
             <small>
-              <a href="" class="go-to-next-slide">
-                Referencias y recursos
-                <i class="fa-regular fa-bookmark"></i>
-                <i class="fa-solid fa-link"></i>
-              </a>
               <br>
               <br>
-              <a href="https://github.com/stsewd/charla-xxx" target="_blank">
+              <a href="https://github.com/stsewd/charla-seguridad-python-apps" target="_blank">
                 <span>
                   Código fuente <i class="fas fa-code-branch"></i>
                 </span>
                 <br />
-                <span>https://github.com/stsewd/charla-xxx</span>
+                <span>https://github.com/stsewd/charla-seguridad-python-apps</span>
               </a>
             </small>
           </p>
@@ -235,40 +1228,6 @@
           bien, así que siéntanse libres de preguntar algo incluso si ya lo
           di en la presentación, y lo voy a tratar de aclarar.
         </aside>
-      </section>
-
-      <section>
-        <div>
-          <h2>Referencias y recursos</h2>
-          <small>
-            <ul>
-              <li>
-                <a href="#" target="_blank">Simple link</a>
-              </li>
-              <li>
-                Link with text:
-                <a href="#" target="_blank">
-                  https://example.com
-                </a>
-              </li>
-              <li>
-                Group of links:
-                <ul>
-                  <li>
-                    <a href="#" target="_blank">
-                      https://example.com/1/
-                    </a>
-                  </li>
-                  <li>
-                    <a href="#" target="_blank">
-                      https://example.com/2/
-                    </a>
-                  </li>
-                </ul>
-              </li>
-            </ul>
-          </small>
-        </div>
       </section>
     </div>
   </div>
