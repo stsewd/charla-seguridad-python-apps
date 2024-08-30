@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block title %}Redirect{% endblock %}
+{% block content %}
+<h1>Redirect</h1>
+
+<form action="{% url "redirect" %}" method="get">
+  <label for="url">URL</label>
+  <input type="text" id="url" name="url" value="{{ url|default:"" }}">
+  <button type="submit">Redirect</button>
+</form>
+{% endblock %}

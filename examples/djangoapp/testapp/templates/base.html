@@ -1,0 +1,25 @@
+{% load static from static %}
+<!DOCTYPE html>
+<html data-theme="light">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!-- PicoCSS -->
+<link rel="stylesheet" href="{% static 'node/@picocss/pico/css/pico.blue.min.css' %}">
+<link rel="stylesheet" href="{% static 'node/@picocss/pico/css/pico.colors.min.css' %}">
+
+<!-- Fontawewome -->
+<link rel="stylesheet" href="{% static 'node/@fortawesome/fontawesome-free/css/all.min.css' %}">
+<title>
+  {% block title %}{% endblock %}
+</title>
+</head>
+
+<body>
+  <main class="container">
+    {% block content %}
+    {% endblock %}
+  </main>
+</body>
+
+</html>

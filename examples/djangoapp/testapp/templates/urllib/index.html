@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+
+{% block title %}Test urllib.parse{% endblock %}
+{% block content %}
+<h1>
+  Test urllib.parse
+</h1>
+
+<div>
+  <form action="." method="get">
+    <label for="url">URL:</label>
+    <input type="text" id="url" name="url" value="{{ url|default:"" }}">
+    <button type="submit">Parse</button>
+  </form>
+</div>
+<table>
+  <tr>
+    <td>url:</td>
+    <td><code><a href="{{ url|default:"#" }}" target="_blank">{{ url|default:"" }}</a></code></td>
+  </tr>
+  <tr>
+    <td>parsed.scheme:</td>
+    <td><code>{{ parsed.scheme|default:"" }}</code></td>
+  </tr>
+  <tr>
+    <td>parsed.netloc:</td>
+    <td><code>{{ parsed.netloc|default:"" }}</code></td>
+  </tr>
+  <tr>
+    <td>parsed.hostname:</td>
+    <td><code>{{ parsed.hostname|default:"" }}</code></td>
+  </tr>
+  <tr>
+    <td>parsed.port:</td>
+    <td><code>{{ parsed.port|default:"" }}</code></td>
+  </tr>
+  <tr>
+    <td>parsed.path:</td>
+    <td><code>{{ parsed.path|default:"" }}</code></td>
+  </tr>
+  <tr>
+    <td>parsed.query:</td>
+    <td><code>{{ parsed.query|default:"" }}</code></td>
+  </tr>
+  <tr>
+    <td>parsed.fragment:</td>
+    <td><code>{{ parsed.fragment|default:"" }}</code></td>
+  </tr>
+  <tr>
+    <td>parsed.geturl():</td>
+    <td><code><a href="{{ parsed.geturl|default:"#" }}" target="_blank">{{ parsed.geturl|default:"" }}</a></code></td>
+  </tr>
+</table>
+{% endblock %}

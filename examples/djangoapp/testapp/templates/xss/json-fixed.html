@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block title %}JSON{% endblock %}
+{% block content %}
+
+<h1>JSON</h1>
+
+<form action="." method="get">
+  <label for="email">Your name:</label>
+  <input type="text" id="name" name="name" value="{{ name|default:"" }}">
+  <button type="submit">Render JSON</button>
+</form>
+
+<p id="render-json"></p>
+
+{{ json|json_script:"json-data" }}
+
+<script>
+  const json_obj = JSON.parse(document.getElementById('json-data').textContent);
+  document.getElementById("render-json").textContent = JSON.stringify(json_obj);
+</script>
+
+{% endblock %}

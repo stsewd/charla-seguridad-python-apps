@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block title %}
+Is URL relative?
+{% endblock %}
+{% block content %}
+<h1>
+  Make URL relative
+</h1>
+
+<form action="." method="get">
+  <label for="url">URL:</label>
+  <input type="text" id="url" name="url" value="{{ url|default:"" }}">
+  <button type="submit">
+    Make relative
+  </button>
+</form>
+
+<h2>
+  Result
+</h2>
+
+<div>
+  <p>
+  <a href="{{ relative_url }}" target="_blank">{{ relative_url }}</a>
+  </p>
+</div>
+{% endblock %}
