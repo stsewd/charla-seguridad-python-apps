@@ -27,3 +27,26 @@
 .borderless {
   border: none;
 }
+
+.align-top tr td {
+  vertical-align: top;
+}
+
+.align-center tr td * {
+  vertical-align: middle;
+}
+
+.color-green {
+  color: #00FF00;
+  /* color: #1b998b;*/
+}
+
+.color-red {
+  color: #FF0000;
+  /*color: #FF6666;*/
+}
+
+.color-blue {
+  color: #0000FF;
+  /*color: #89CFF3;*/
+}

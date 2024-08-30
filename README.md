@@ -1,6 +1,6 @@
-# {Título de la charla}
+# Seguridad en aplicaciones Python
 
-Slides de la charla dada en {evento} el {fecha}.
+Slides de la charla dada en "PyDay Piura" el 30 de Agosto.
 
 ## Dependencias
 
